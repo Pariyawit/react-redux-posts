@@ -1,16 +1,19 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { Provider } from 'react-redux';
 
 import Posts from './components/Posts';
-import Postform from './components/Postform';
+import PostForm from './components/PostForm';
+import store from './store.js';
 
 function App() {
   return (
-    <div className='App'>
-      <Postform></Postform>
-      <Posts></Posts>
-    </div>
+    <Provider store={store}>
+      <div className='App'>
+        <PostForm></PostForm>
+        <Posts></Posts>
+      </div>
+    </Provider>
   );
 }
 

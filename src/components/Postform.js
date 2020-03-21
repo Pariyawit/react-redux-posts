@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { createPost } from '../actions/postActions';
 
-export default function Postform() {
+function PostForm(props) {
   const [form, setForm] = useState({ title: '', body: '' });
 
   const handleChange = e => {
@@ -17,12 +19,7 @@ export default function Postform() {
     e.preventDefault();
     const post = form;
     console.log(post);
-    axios
-      .post('/posts', post)
-      .then(res => {
-        console.log(res.data);
-      })
-      .catch(err => console.log(err));
+    props.createPost(post);
   };
 
   return (
@@ -51,3 +48,9 @@ export default function Postform() {
     </div>
   );
 }
+
+PostForm.propTypes = {
+  createPost: PropTypes.func.isRequired
+};
+
+export default connect(null, { createPost })(PostForm);

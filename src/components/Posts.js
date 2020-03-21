@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { fetchPosts } from '../actions/postActions';
 
-export default function Posts() {
-  const [posts, setPosts] = useState([]);
+function Posts(props) {
+  const { posts, newPost } = props;
+
   useEffect(() => {
-    axios.get('https://jsonplaceholder.typicode.com/posts').then(res => {
-      setPosts(res.data);
-    });
+    props.fetchPosts();
   }, []);
+
+  useEffect(() => {
+    posts.unshift(newPost);
+  }, [newPost]);
 
   const postItems = posts.map(post => (
     <div key={post.id}>
@@ -23,3 +28,16 @@ export default function Posts() {
     </div>
   );
 }
+
+Posts.propTypes = {
+  fetchPosts: PropTypes.func.isRequired,
+  posts: PropTypes.array.isRequired,
+  newPsot: PropTypes.object
+};
+
+const mapStateToProps = state => ({
+  posts: state.posts.items,
+  newPost: state.posts.item
+});
+
+export default connect(mapStateToProps, { fetchPosts })(Posts);
